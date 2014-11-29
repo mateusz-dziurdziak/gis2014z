@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:18.0', 'net.openhft:koloboke-api-jdk8:0.6.5'
+    compile group: 'org.graphstream', name: 'gs-core', version: '1.2'
+    compile group: 'org.graphstream', name: 'gs-algo', version: '1.2'
+    runtime 'net.openhft:koloboke-impl-jdk8:0.6.5'
+    testCompile 'junit:junit:4.12-beta-3', 'org.mockito:mockito-all:1.10.8', 'org.assertj:assertj-core:1.7.0'
+}
