@@ -5,6 +5,9 @@ import net.openhft.koloboke.collect.map.hash.HashIntObjMaps;
 import net.openhft.koloboke.collect.set.hash.HashIntSet;
 import net.openhft.koloboke.collect.set.hash.HashIntSets;
 
+import java.util.Collections;
+import java.util.Set;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static java.lang.Math.max;
@@ -13,15 +16,26 @@ import static java.lang.Math.min;
 /**
  * Model of graph. Following assumptions taken:
  * <ul>
- *     <li>self edges forbidden</li>
- *     <li>parallel edges are forbidden</li>
- *     <li>graph is not oriented</li>
- *     <li>removing of vertex is forbidden</li>
- *     <li>removing of edge is allowed</li>
- *     <li>edges does not have weights</li>
+ * <li>self edges forbidden</li>
+ * <li>parallel edges are forbidden</li>
+ * <li>graph is not oriented</li>
+ * <li>removing of vertex is forbidden</li>
+ * <li>removing of edge is allowed</li>
+ * <li>edges does not have weights</li>
  * </ul>
  */
 public class Graph {
+
+    private static final HashIntSet EMPTY_EDGES_SET = HashIntSets.newImmutableSet(new int[]{});
+
+    /**
+     * Map of vertices in graph
+     * <p/>
+     * <p>{ vertexNumber -> set of connected vertices }</p>
+     * <p/>
+     * <p>Connection between vertices is stored only in one place. If v1 < v2 only v1 list contains v2 number</p>
+     */
+    private final HashIntObjMap<HashIntSet> edgeMap;
 
     /**
      * Number of vertices in graph
@@ -33,18 +47,10 @@ public class Graph {
      */
     private int edgeCount = 0;
 
-    /**
-     * Map of vertices in graph
-     *
-     * <p>{ vertexNumber -> set of connected vertices }</p>
-     *
-     * <p>Connection between vertices is stored only in one place. If v1 < v2 only v1 list contains v2 number</p>
-     */
-    private final HashIntObjMap<HashIntSet> edgeMap;
-
 
     /**
      * Creates empty graph (without edges)
+     *
      * @param vertexCount number of initial vertices
      */
     public Graph(int vertexCount) {
@@ -54,6 +60,7 @@ public class Graph {
 
     /**
      * Returns number of vertices in graph
+     *
      * @return {@link #vertexCount}
      */
     public int getVertexCount() {
@@ -62,6 +69,7 @@ public class Graph {
 
     /**
      * Adds vertex to graph
+     *
      * @return number of added vertex
      */
     public int addVertex() {
@@ -70,6 +78,7 @@ public class Graph {
 
     /**
      * Checks if graph contains given vertex
+     *
      * @param number vertexNumber
      * @return true if graph contains vertex, false in the other case
      * @throws java.lang.IllegalArgumentException if number is less than 0
@@ -82,6 +91,7 @@ public class Graph {
 
     /**
      * Return number of edges in graph
+     *
      * @return {@link #edgeCount}
      */
     public int getEdgeCount() {
@@ -90,10 +100,11 @@ public class Graph {
 
     /**
      * Adds edge between vertices
-     * @param firstVertex first vertex number
+     *
+     * @param firstVertex  first vertex number
      * @param secondVertex second vertex number
      * @throws java.lang.IllegalArgumentException if firstVertex/secondVertex is not in graph
-     * or if firstVertex==secondVertex
+     *                                            or if firstVertex==secondVertex
      */
     public void addEdge(int firstVertex, int secondVertex) {
         checkArgument(firstVertex >= 0 && firstVertex < vertexCount);
@@ -116,10 +127,11 @@ public class Graph {
 
     /**
      * Removes edge from graph
-     * @param firstVertex first vertex number
+     *
+     * @param firstVertex  first vertex number
      * @param secondVertex second vertex number
      * @throws java.lang.IllegalArgumentException if firstVertex/secondVertex is not in graph
-     * @throws java.lang.IllegalStateException if edge does not exist
+     * @throws java.lang.IllegalStateException    if edge does not exist
      */
     public void removeEdge(int firstVertex, int secondVertex) {
         checkArgument(firstVertex >= 0 && firstVertex < vertexCount);
@@ -137,7 +149,8 @@ public class Graph {
 
     /**
      * Checks if edge between vertices exists
-     * @param firstVertex first vertex number
+     *
+     * @param firstVertex  first vertex number
      * @param secondVertex second vertext number
      * @return true if vertex exists, false in the other case
      * @throws java.lang.IllegalArgumentException if firstVertex/secondVertex is not in graph
@@ -156,6 +169,7 @@ public class Graph {
 
     /**
      * Returns vertex degree
+     *
      * @param vertex vertex number
      * @return vertex degree
      * @throws java.lang.IllegalArgumentException if vertex doesn't exist
@@ -165,6 +179,20 @@ public class Graph {
 
         HashIntSet edgesFromVertex = edgeMap.get(vertex);
         return edgesFromVertex == null ? 0 : edgesFromVertex.size();
+    }
+
+    /**
+     * Returns vertex neighbours
+     *
+     * @param vertex vertex number
+     * @return vertex neighbours
+     * @throws java.lang.IllegalArgumentException if vertex doesn't exist
+     */
+    public HashIntSet getVertexNeighbours(int vertex) {
+        checkArgument(vertex >= 0 && vertex < vertexCount);
+
+        HashIntSet edgesFromVertex = edgeMap.get(vertex);
+        return edgesFromVertex == null ? EMPTY_EDGES_SET : edgesFromVertex;
     }
 
 }

@@ -40,5 +40,5 @@ public class ScaleFreeGraphGeneratorTest {
 
         assertEquals(14, generator.getGraph().getVertexCount());
     }
-    
+
 }
