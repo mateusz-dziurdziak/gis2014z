@@ -9,9 +9,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Generates graph simulating small world network
+ * Generator of small world network
  */
-public class SmallWorldGraphGenerator implements GraphGenerator {
+public class SmallWorldGraphGenerator extends AbstractGraphGenerator {
 
     /**
      * Number of vertices
@@ -27,11 +27,6 @@ public class SmallWorldGraphGenerator implements GraphGenerator {
      * Probabilty of edge change
      */
     private final float probabilityOfEdgeChange;
-
-    /**
-     * Generated graph
-     */
-    private Graph graph;
 
     /**
      * Creates generator
@@ -59,7 +54,7 @@ public class SmallWorldGraphGenerator implements GraphGenerator {
 
 
     @Override
-    public void generate() {
+    protected void doGenerate() {
         checkState(graph == null);
 
         graph = new Graph(verticesCount);
@@ -112,12 +107,6 @@ public class SmallWorldGraphGenerator implements GraphGenerator {
         }
 
         graph.addEdge(firstVertex, newSecondVertex);
-    }
-
-    @Override
-    public Graph getGraph() {
-        checkState(graph != null);
-        return graph;
     }
 
 }

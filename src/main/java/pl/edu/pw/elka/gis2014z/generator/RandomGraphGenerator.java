@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Generator of random graph.
  */
-public class RandomGraphGenerator implements GraphGenerator {
+public class RandomGraphGenerator extends AbstractGraphGenerator {
 
     /**
      * Number of vertices
@@ -23,10 +23,6 @@ public class RandomGraphGenerator implements GraphGenerator {
      */
     private final float probablityOfEdge;
 
-    /**
-     * Generated graph
-     */
-    private Graph graph;
 
     /**
      * Creates RandomGraphGenerator
@@ -43,7 +39,7 @@ public class RandomGraphGenerator implements GraphGenerator {
     }
 
     @Override
-    public void generate() {
+    protected void doGenerate() {
         checkState(graph == null);
 
         graph = new Graph(verticesCount);
@@ -63,12 +59,6 @@ public class RandomGraphGenerator implements GraphGenerator {
                 }
             }
         }
-    }
-
-    @Override
-    public Graph getGraph() {
-        checkState(graph != null);
-        return graph;
     }
 
 }
