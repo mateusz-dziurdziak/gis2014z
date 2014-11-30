@@ -154,4 +154,17 @@ public class Graph {
         return edgesFromLowerVertexSet == null ? false : edgesFromLowerVertexSet.contains(upper);
     }
 
+    /**
+     * Returns vertex degree
+     * @param vertex vertex number
+     * @return vertex degree
+     * @throws java.lang.IllegalArgumentException if vertex doesn't exist
+     */
+    public int getVertexDegree(int vertex) {
+        checkArgument(vertex >= 0 && vertex < vertexCount);
+
+        HashIntSet edgesFromVertex = edgeMap.get(vertex);
+        return edgesFromVertex == null ? 0 : edgesFromVertex.size();
+    }
+
 }
