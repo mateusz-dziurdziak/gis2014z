@@ -30,8 +30,8 @@ public class RandomGraphGenerator implements GraphGenerator {
 
     /**
      * Creates RandomGraphGenerator
-     * @param verticesCount number of vertices
-     * @param probablityOfEdge probability of edge
+     * @param verticesCount {@link #verticesCount}
+     * @param probablityOfEdge {@link #probablityOfEdge}
      * @throws java.lang.IllegalArgumentException if verticesCount < 0 or if probablityOfEdge is not inside range [0, 1]
      */
     public RandomGraphGenerator(int verticesCount, float probablityOfEdge) {
