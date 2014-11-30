@@ -13,7 +13,7 @@ import static java.lang.Math.min;
 /**
  * Model of graph. Following assumptions taken:
  * <ul>
- *     <li>self edges are allowed</li>
+ *     <li>self edges forbidden</li>
  *     <li>parallel edges are forbidden</li>
  *     <li>graph is not oriented</li>
  *     <li>removing of vertex is forbidden</li>
@@ -92,10 +92,12 @@ public class Graph {
      * @param firstVertex first vertex number
      * @param secondVertex second vertex number
      * @throws java.lang.IllegalArgumentException if firstVertex/secondVertex is not in graph
+     * or if firstVertex==secondVertex
      */
     public void addEdge(int firstVertex, int secondVertex) {
         checkArgument(firstVertex >= 0 && firstVertex < vertexCount);
         checkArgument(secondVertex >= 0 && secondVertex < vertexCount);
+        checkArgument(firstVertex != secondVertex);
 
         int lower = min(firstVertex, secondVertex);
         int upper = max(firstVertex, secondVertex);
