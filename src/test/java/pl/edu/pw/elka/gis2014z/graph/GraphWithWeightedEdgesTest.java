@@ -18,6 +18,7 @@ public class GraphWithWeightedEdgesTest {
         assertEquals(2.0f, graph.getEdgeWeight(1, 4), 0.f);
     }
 
+    @SuppressWarnings("deprecation")
     @Test(expected = UnsupportedOperationException.class)
     public void testAddEdgeWithoutWeight() {
         GraphWithWeightedEdges graph = new GraphWithWeightedEdges(2);
