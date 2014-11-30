@@ -3,6 +3,8 @@ package pl.edu.pw.elka.gis2014z.generator;
 import org.junit.Test;
 import pl.edu.pw.elka.gis2014z.graph.Graph;
 
+import java.util.Random;
+
 import static org.junit.Assert.assertEquals;
 
 public class SmallWorldGraphGeneratorTest {
@@ -35,7 +37,12 @@ public class SmallWorldGraphGeneratorTest {
 
     @Test
     public void testEdgesCountHighProbability() {
-        GraphGenerator graphGenerator = new SmallWorldGraphGenerator(100, 4, 0.8f);
+        GraphGenerator graphGenerator = new SmallWorldGraphGenerator(100, 4, 0.8f) {
+            @Override
+            protected Random getRandomGenerator() {
+                return new Random(1);
+            }
+        };
         graphGenerator.generate();
 
         Graph graph = graphGenerator.getGraph();

@@ -18,6 +18,7 @@ import static java.lang.Math.min;
  *     <li>graph is not oriented</li>
  *     <li>removing of vertex is forbidden</li>
  *     <li>removing of edge is allowed</li>
+ *     <li>edges does not have weights</li>
  * </ul>
  */
 public class Graph {

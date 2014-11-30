@@ -44,7 +44,7 @@ public class RandomGraphGenerator extends AbstractGraphGenerator {
 
         graph = new Graph(verticesCount);
 
-        Random random = new Random();
+        Random random = getRandomGenerator();
 
         for (int i = 0; i < verticesCount; i++) {
             for (int j = i; j < verticesCount; j++) {

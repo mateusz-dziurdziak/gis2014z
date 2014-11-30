@@ -69,4 +69,5 @@ public class GraphTest {
         assertEquals(0, graph.getEdgeCount());
         assertThat(!graph.hasEdge(0, 1));
     }
+
 }

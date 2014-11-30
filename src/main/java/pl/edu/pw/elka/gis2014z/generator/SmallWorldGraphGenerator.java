@@ -78,7 +78,7 @@ public class SmallWorldGraphGenerator extends AbstractGraphGenerator {
      * Randomizes edges of graph with probablity {@link #probabilityOfEdgeChange}
      */
     private void randomizeEdges() {
-        Random random = new Random();
+        Random random = getRandomGenerator();
         for (int i = 0; i < verticesCount; i++) {
             for (int j = 1; j <= initialGraphLevel / 2; j++) {
                 float changeProb = random.nextFloat();

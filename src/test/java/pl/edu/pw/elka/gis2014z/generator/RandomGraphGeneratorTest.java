@@ -3,6 +3,8 @@ package pl.edu.pw.elka.gis2014z.generator;
 import org.junit.Test;
 import pl.edu.pw.elka.gis2014z.graph.Graph;
 
+import java.util.Random;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -31,7 +33,12 @@ public class RandomGraphGeneratorTest {
 
     @Test
     public void testHighProbability() {
-        GraphGenerator generator = new RandomGraphGenerator(200, 0.8f);
+        GraphGenerator generator = new RandomGraphGenerator(200, 0.8f) {
+            @Override
+            protected Random getRandomGenerator() {
+                return new Random(1);
+            }
+        };
         generator.generate();
 
         Graph graph = generator.getGraph();
