@@ -1,6 +1,5 @@
 package pl.edu.pw.elka.gis2014z.generator;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

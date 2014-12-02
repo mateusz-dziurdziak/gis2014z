@@ -23,7 +23,7 @@ public class GraphTimer {
     public void generationStart() {
         checkState(startTime == -1L);
 
-        startTime = System.nanoTime();
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -33,14 +33,14 @@ public class GraphTimer {
     public void generationEnd() {
         checkState(startTime != -1L);
 
-        generationsTimes.add(System.nanoTime() - startTime);
+        generationsTimes.add(System.currentTimeMillis() - startTime);
 
         startTime = -1L;
     }
 
     /**
-     * Returns list of nanoseconds per generations
-     * @return list of nanoseconds per generations
+     * Returns list of milliseconds per generations
+     * @return list of milliseconds per generations
      */
     public List<Long> getGenerationsTimes() {
         return ImmutableList.copyOf(generationsTimes);
