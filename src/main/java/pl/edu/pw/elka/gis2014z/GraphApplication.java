@@ -14,6 +14,7 @@ import pl.edu.pw.elka.gis2014z.generator.RandomGraphGenerator;
 import pl.edu.pw.elka.gis2014z.generator.ScaleFreeGraphGenerator;
 import pl.edu.pw.elka.gis2014z.generator.SmallWorldGraphGenerator;
 import pl.edu.pw.elka.gis2014z.graph.Graph;
+import pl.edu.pw.elka.gis2014z.writer.JpgWriter;
 import pl.edu.pw.elka.gis2014z.writer.TextWriter;
 
 import java.io.IOException;
@@ -98,6 +99,7 @@ public class GraphApplication {
         Graph graph = generator.getGraph();
 
         writeTextFiles(line, (AbstractGraphGenerator) generator, graph);
+        writeToJpgFile(line, graph);
     }
 
     private static void writeTextFiles(CommandLine line, AbstractGraphGenerator generator, Graph graph) {
@@ -110,6 +112,15 @@ public class GraphApplication {
         try (OutputStream os = Files.newOutputStream((Paths.get("./" + line.getOptionValue("f") + "_graph")))) {
             TextWriter.writeGraphInfoToStream(graph, os);
             TextWriter.writeGraphToStream(graph, os);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeToJpgFile(CommandLine line, Graph graph) {
+        try {
+            JpgWriter.writeGraphicGraphToFile(graph,
+                    Paths.get("./" + line.getOptionValue("f") + "_picture").toFile().getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }

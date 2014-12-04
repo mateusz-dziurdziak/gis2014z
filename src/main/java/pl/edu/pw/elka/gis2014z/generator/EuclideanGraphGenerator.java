@@ -1,7 +1,7 @@
 package pl.edu.pw.elka.gis2014z.generator;
 
 import com.google.common.collect.Range;
-import pl.edu.pw.elka.gis2014z.graph.GraphWithWeightedEdges;
+import pl.edu.pw.elka.gis2014z.graph.GraphWithDimension;
 
 import java.util.Random;
 
@@ -45,24 +45,24 @@ public class EuclideanGraphGenerator extends AbstractGraphGenerator {
     protected void doGenerate() {
         checkState(graph == null);
 
-        graph = new GraphWithWeightedEdges(verticesCount);
-        GraphWithWeightedEdges convertedGraph = (GraphWithWeightedEdges) graph;
+        graph = new GraphWithDimension(0);
+        GraphWithDimension convertedGraph = (GraphWithDimension) graph;
 
         Random random = getRandomGenerator();
-
-        float x[] = new float[verticesCount];
-        float y[] = new float[verticesCount];
 
         float r = radius * radius;
 
         for (int i = 0; i < verticesCount; i++) {
-            x[i] = random.nextFloat();
-            y[i] = random.nextFloat();
+            float x = random.nextFloat();
+            float y = random.nextFloat();
+            convertedGraph.addVertex(x, y);
 
             for (int j = 0; j < i; j++) {
-                float d = ((x[i]-x[j])*(x[i]-x[j])) + (y[i]-y[j])*(y[i]-y[j]);
+                float xSec = convertedGraph.getVertexX(j);
+                float ySec = convertedGraph.getVertexY(j);
+                float d = ((x-xSec)*(x-xSec)) + ((y-ySec)*(y-ySec));
                 if (d <= r) {
-                    convertedGraph.addEdge(i, j, (float) Math.sqrt(d));
+                    convertedGraph.addEdge(i, j);
                 }
             }
         }

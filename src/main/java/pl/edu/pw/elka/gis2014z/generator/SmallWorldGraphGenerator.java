@@ -101,7 +101,7 @@ public class SmallWorldGraphGenerator extends AbstractGraphGenerator {
         graph.removeEdge(firstVertex, secondVertex);
 
         int newSecondVertex = random.nextInt(verticesCount);
-        if (firstVertex == newSecondVertex
+        while (firstVertex == newSecondVertex
                 || graph.hasEdge(firstVertex, newSecondVertex)) {
             newSecondVertex = random.nextInt(verticesCount);
         }

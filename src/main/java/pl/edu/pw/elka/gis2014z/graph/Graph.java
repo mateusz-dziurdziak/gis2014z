@@ -70,7 +70,7 @@ public class Graph {
      * @return number of added vertex
      */
     public int addVertex() {
-        return ++this.vertexCount;
+        return this.vertexCount++;
     }
 
     /**

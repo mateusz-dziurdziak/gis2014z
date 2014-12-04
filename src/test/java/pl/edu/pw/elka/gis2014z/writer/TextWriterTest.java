@@ -16,7 +16,7 @@ public class TextWriterTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         TextWriter.writeGraphToStream(graph, outputStream);
 
-        assertEquals("", outputStream.toString());
+        assertEquals("Wierzchołek | sąsiad\n", outputStream.toString());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class TextWriterTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         TextWriter.writeGraphToStream(graph, outputStream);
 
-        assertEquals("", outputStream.toString());
+        assertEquals("Wierzchołek | sąsiad\n", outputStream.toString());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class TextWriterTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         TextWriter.writeGraphToStream(graph, outputStream);
 
-        assertEquals("0 1\n2 3\n", new String(outputStream.toByteArray()));
+        assertEquals("Wierzchołek | sąsiad\n0 1\n2 3\n", new String(outputStream.toByteArray()));
     }
 
 }
