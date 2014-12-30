@@ -1,6 +1,7 @@
 package pl.edu.pw.elka.gis2014z.generator;
 
 import com.google.common.collect.Range;
+import net.openhft.koloboke.collect.set.hash.HashIntSet;
 import pl.edu.pw.elka.gis2014z.graph.Graph;
 
 import java.util.Random;
@@ -28,6 +29,11 @@ public class ScaleFreeGraphGenerator extends AbstractGraphGenerator {
     private final int verticesAddedAtEachStep;
 
     /**
+     * Number of edges of newly created vertex
+     */
+    private final int newVertexEdgesCount;
+
+    /**
      * Sum of all degrees of vertices
      */
     private int graphDegreeSum = 0;
@@ -36,6 +42,7 @@ public class ScaleFreeGraphGenerator extends AbstractGraphGenerator {
      * Creates ScaleFreeGraphGenerator
      * @param initialVerticesCount {@link #initialVerticesCount}
      * @param initialEdgesCount {@link #initialEdgesCount}
+     * @param newVertexEdgesCount {@link #newVertexEdgesCount}
      * @param verticesAddedAtEachStep {@link #verticesAddedAtEachStep}
      * @throws java.lang.IllegalArgumentException if
      * <ui>
@@ -44,7 +51,7 @@ public class ScaleFreeGraphGenerator extends AbstractGraphGenerator {
      *     <li>verticesAddedAtEachStep <= 0</li>
      * </ui>
      */
-    public ScaleFreeGraphGenerator(int initialVerticesCount, int initialEdgesCount, int verticesAddedAtEachStep) {
+    public ScaleFreeGraphGenerator(int initialVerticesCount, int initialEdgesCount, int newVertexEdgesCount, int verticesAddedAtEachStep) {
         checkArgument(initialVerticesCount >= 0);
         checkArgument(Range.closed(0, (initialVerticesCount * (initialVerticesCount - 1))).contains(initialEdgesCount));
         checkArgument(verticesAddedAtEachStep > 0);
@@ -52,11 +59,11 @@ public class ScaleFreeGraphGenerator extends AbstractGraphGenerator {
         this.initialVerticesCount = initialVerticesCount;
         this.initialEdgesCount = initialEdgesCount;
         this.verticesAddedAtEachStep = verticesAddedAtEachStep;
+        this.newVertexEdgesCount = newVertexEdgesCount;
     }
 
     @Override
     protected void doGenerate() {
-        Random random = getRandomGenerator();
         if (graph == null) {
             initGraph();
         } else {
@@ -90,18 +97,35 @@ public class ScaleFreeGraphGenerator extends AbstractGraphGenerator {
      * where d(i) - degree of vertex i, d(G) - total degree of graph
      */
     private void addNewVertices() {
-        Random random = getRandomGenerator();
         int startVerticesCount = graph.getVertexCount();
         while (graph.getVertexCount() < startVerticesCount + verticesAddedAtEachStep) {
             int addedVertex = graph.addVertex();
-            for (int i = 0; i < addedVertex; i++) {
-                float edgeProbabilty = random.nextFloat();
-                if (edgeProbabilty < graph.getVertexDegree(i) / graphDegreeSum) {
-                    graph.addEdge(i, addedVertex);
-                    graphDegreeSum += 2;
+
+            addEdges(addedVertex);
+        }
+    }
+
+    private void addEdges(int addedVertex) {
+        Random random = getRandomGenerator();
+
+        for (int i = 0; i < newVertexEdgesCount; i++) {
+            int randomIndex = random.nextInt(graphDegreeSum);
+
+            for (int j=0; j < addedVertex; j++) {
+                randomIndex -= graph.getVertexDegree(j);
+                if (randomIndex < 0) {
+                    if (graph.hasEdge(addedVertex, j)) {
+                        --i;
+                        break;
+                    } else {
+                        graph.addEdge(addedVertex, j);
+                        break;
+                    }
                 }
             }
         }
+
+        graphDegreeSum += graph.getVertexDegree(addedVertex) * 2;
     }
 
 }

@@ -30,6 +30,7 @@ public class Validator {
             case "sf" :
                 assertE();
                 assertSv();
+                assertM();
                 break;
             case "e" :
                 assertR();
@@ -74,13 +75,19 @@ public class Validator {
         int vertices = Integer.parseInt(line.getOptionValue("v"));
         assertPresent("e");
         assertInteger("e");
-        assertIntegerInRange("lvl", Range.closed(0, vertices  * (vertices - 1) / 2));
+        assertIntegerInRange("e", Range.closed(0, vertices  * (vertices - 1) / 2));
     }
 
     private void assertSv() throws ValidationException {
         assertPresent("sv");
         assertInteger("sv");
         assertIntegerInRange("sv", Range.closed(1, 25000));
+    }
+
+    private void assertM() throws ValidationException {
+        assertPresent("m");
+        assertInteger("m");
+        assertIntegerInRange("sv", Range.closed(0, 20000));
     }
 
     private void assertR() throws ValidationException {

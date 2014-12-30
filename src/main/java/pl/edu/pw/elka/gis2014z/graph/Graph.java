@@ -1,5 +1,7 @@
 package pl.edu.pw.elka.gis2014z.graph;
 
+import net.openhft.koloboke.collect.map.hash.HashIntIntMap;
+import net.openhft.koloboke.collect.map.hash.HashIntIntMaps;
 import net.openhft.koloboke.collect.map.hash.HashIntObjMap;
 import net.openhft.koloboke.collect.map.hash.HashIntObjMaps;
 import net.openhft.koloboke.collect.set.hash.HashIntSet;
@@ -35,6 +37,11 @@ public class Graph {
     private final HashIntObjMap<HashIntSet> edgeMap;
 
     /**
+     * Vertices degrees
+     */
+    private final HashIntIntMap degrees;
+
+    /**
      * Number of vertices in graph
      */
     private int vertexCount = 0;
@@ -53,6 +60,7 @@ public class Graph {
     public Graph(int vertexCount) {
         this.vertexCount = vertexCount;
         edgeMap = HashIntObjMaps.newUpdatableMap(vertexCount);
+        degrees = HashIntIntMaps.newMutableMap();
     }
 
     /**
@@ -119,6 +127,18 @@ public class Graph {
 
         if (edgesFromLowerVertexSet.add(upper)) {
             edgeCount++;
+
+            if (degrees.containsKey(lower)) {
+                degrees.put(lower, degrees.get(lower) + 1);
+            } else {
+                degrees.put(lower, 0);
+            }
+
+            if (degrees.containsKey(upper)) {
+                degrees.put(upper, degrees.get(upper) + 1);
+            } else {
+                degrees.put(upper, 0);
+            }
         }
     }
 
@@ -142,6 +162,8 @@ public class Graph {
 
         checkState(edgesFromLowerVertexSet.removeInt(upper));
         edgeCount--;
+        degrees.put(lower, degrees.get(lower) - 1);
+        degrees.put(upper, degrees.get(upper) - 1);
     }
 
     /**
@@ -174,8 +196,7 @@ public class Graph {
     public int getVertexDegree(int vertex) {
         checkArgument(vertex >= 0 && vertex < vertexCount);
 
-        HashIntSet edgesFromVertex = edgeMap.get(vertex);
-        return edgesFromVertex == null ? 0 : edgesFromVertex.size();
+        return degrees.containsKey(vertex) ? degrees.get(vertex) : 0;
     }
 
     /**

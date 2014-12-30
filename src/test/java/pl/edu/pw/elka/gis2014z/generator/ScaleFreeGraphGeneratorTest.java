@@ -8,22 +8,22 @@ public class ScaleFreeGraphGeneratorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidInitialVerticesCount() {
-        new ScaleFreeGraphGenerator(-1, 0, 1);
+        new ScaleFreeGraphGenerator(-1, 0, 0, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidInitialEdgesCount() {
-        new ScaleFreeGraphGenerator(2, 3, 1);
+        new ScaleFreeGraphGenerator(2, 3, 0, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidAddedVertices() {
-        new ScaleFreeGraphGenerator(2, 1, 0);
+        new ScaleFreeGraphGenerator(2, 1, 0, 0);
     }
 
     @Test
     public void testInitGraph() {
-        GraphGenerator generator = new ScaleFreeGraphGenerator(10, 5, 1);
+        GraphGenerator generator = new ScaleFreeGraphGenerator(10, 5, 5, 1);
         generator.generate();
 
         assertEquals(10, generator.getGraph().getVertexCount());
@@ -32,7 +32,7 @@ public class ScaleFreeGraphGeneratorTest {
 
     @Test
     public void testAddVertices() {
-        GraphGenerator generator = new ScaleFreeGraphGenerator(10, 5, 2);
+        GraphGenerator generator = new ScaleFreeGraphGenerator(10, 5, 4, 2);
         generator.generate();
         generator.generate();
         generator.generate();
